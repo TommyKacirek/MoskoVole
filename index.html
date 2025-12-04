@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MOS zápočet - Kompletní Test (57 Otázek)</title>
+    <title>MikroTik MTCNA - Kompletní Test (57 Otázek)</title>
     <style>
         :root {
             --primary: #2d3e50;
@@ -124,10 +124,7 @@
 </div>
 
 <script>
-    /* KOMPLETNÍ SADA 57 OTÁZEK
-       - Otázky označené 'type: multi' vyžadují zaškrtnutí všech správných možností (dle PDF).
-       - Ostatní jsou 'type: single'.
-    */
+    /* KOMPLETNÍ SADA 57 OTÁZEK - OPRAVENÁ SYNTAXE */
     const quizData = [
         {
             // PDF Otázka 71 - Multi
@@ -182,7 +179,7 @@
                 { text: "Na ether1", correct: false },
                 { text: "Na všech portech ether1-3", correct: false }
             ],
-            [cite_start]rationale: "Pokud jsou porty v bridgi, DHCP musí být konfigurováno na logickém rozhraní 'Bridge'[cite: 1854]."
+            rationale: "Pokud jsou porty v bridgi, DHCP musí být konfigurováno na logickém rozhraní 'Bridge'."
         },
         {
             // PDF Otázka 121
@@ -193,7 +190,7 @@
                 { text: "Chain: dstnat, In-Interface: LAN, Action: masquerade", correct: false },
                 { text: "Chain: input, Action: accept", correct: false }
             ],
-            [cite_start]rationale: "Maškaráda (Source NAT) se používá při odchodu ven z routeru (Out-Interface)[cite: 2164]."
+            rationale: "Maškaráda (Source NAT) se používá při odchodu ven z routeru (Out-Interface)."
         },
         {
             question: "Jakým způsobem je vhodné omezit přístup ke službám (WinBox, SSH) v IP → Services?",
@@ -213,7 +210,7 @@
                 { text: "V IP -> Firewall -> Filter", correct: false },
                 { text: "V nastavení Bridge", correct: false }
             ],
-            [cite_start]rationale: "V menu Tools -> MAC Server lze zakázat discovery a mac-telnet na veřejných portech[cite: 1604]."
+            rationale: "V menu Tools -> MAC Server lze zakázat discovery a mac-telnet na veřejných portech."
         },
         {
             // PDF Otázka 75 - Multi
@@ -224,7 +221,7 @@
                 { text: "Export (skript) je čitelný textový soubor", correct: true },
                 { text: "Backup obsahuje pouze hesla", correct: false }
             ],
-            [cite_start]rationale: "PDF potvrzuje: 'Backup files are not editable' a 'Export saves full configuration in script format'[cite: 1503]."
+            rationale: "PDF potvrzuje: 'Backup files are not editable' a 'Export saves full configuration in script format'."
         },
         {
             question: "Která skupina práv (Group) má plnou kontrolu nad routerem?",
@@ -244,7 +241,7 @@
                 { text: "L2 (Linková)", correct: true },
                 { text: "L1 (Fyzická)", correct: false }
             ],
-            [cite_start]rationale: "Bridge spojuje segmenty sítě na základě MAC adres (Data Link Layer)[cite: 2125]."
+            rationale: "Bridge spojuje segmenty sítě na základě MAC adres (Data Link Layer)."
         },
         {
             question: "Jaký je výchozí STP režim v RouterOS při vytvoření bridge?",
@@ -275,7 +272,7 @@
                 { text: "Wireless v módu 'station'", correct: true },
                 { text: "EOIP tunel", correct: false }
             ],
-            [cite_start]rationale: "Mód 'station' nepodporuje L2 bridging kvůli limitacím 802.11 (3-mac frame)[cite: 2621]."
+            rationale: "Mód 'station' nepodporuje L2 bridging kvůli limitacím 802.11 (3-mac frame)."
         },
         {
             question: "Co znamená volba Hardware Offload u portu v bridge?",
@@ -346,7 +343,7 @@
                 { text: "Complex route", correct: false },
                 { text: "Cable unplugged", correct: false }
             ],
-            rationale: "C = Connected. [cite_start]Vzniká automaticky přidáním IP adresy na interface[cite: 813]."
+            rationale: "C = Connected. Vzniká automaticky přidáním IP adresy na interface."
         },
         {
             // PDF Otázka 16
@@ -357,7 +354,7 @@
                 { text: "0.0.0.0/0", correct: true },
                 { text: "192.168.1.1", correct: false }
             ],
-            rationale: "0.0.0.0/0 zahrnuje všechny sítě. [cite_start]Používá se pro bránu do internetu[cite: 685]."
+            rationale: "0.0.0.0/0 zahrnuje všechny sítě. Používá se pro bránu do internetu."
         },
         {
             question: "Jak router vybírá směrovací záznam, pokud existuje více záznamů odpovídajících adrese?",
@@ -408,7 +405,7 @@
                 { text: "station-bridge", correct: true },
                 { text: "ap-bridge", correct: false }
             ],
-            rationale: "Station-bridge je proprietární režim MikroTiku. [cite_start]Station-pseudobridge je univerzální náhrada (s omezeními)[cite: 1914]."
+            rationale: "Station-bridge je proprietární režim MikroTiku. Station-pseudobridge je univerzální náhrada (s omezeními)."
         },
         {
             question: "Jaká kombinace módů je doporučena pro transparentní most mezi Ethernetem a WiFi?",
@@ -439,7 +436,7 @@
                 { text: "Odpojí klienta od internetu", correct: false },
                 { text: "Zabrání klientům připojit se k AP", correct: false }
             ],
-            [cite_start]rationale: "Default forwarding=no izoluje klienty na L2 vrstvě[cite: 291]."
+            rationale: "Default forwarding=no izoluje klienty na L2 vrstvě."
         },
         {
             question: "Co dělá parametr vlan-id v záznamu WiFi Access Listu?",
@@ -460,7 +457,7 @@
                 { text: "NAT funguje i bez Connection Trackingu", correct: false },
                 { text: "Firewall filtry se zpracovávají náhodně", correct: false }
             ],
-            [cite_start]rationale: "Bez sledování spojení router neví, kam vracet odpovědi pro NATované klienty[cite: 241]."
+            rationale: "Bez sledování spojení router neví, kam vracet odpovědi pro NATované klienty."
         },
         {
             // PDF Otázka 95
@@ -471,7 +468,7 @@
                 { text: "forward", correct: false },
                 { text: "output", correct: false }
             ],
-            [cite_start]rationale: "Chain Input chrání samotný router[cite: 1778]."
+            rationale: "Chain Input chrání samotný router."
         },
         {
             // PDF Otázka 89
@@ -482,7 +479,7 @@
                 { text: "input", correct: false },
                 { text: "prerouting", correct: false }
             ],
-            [cite_start]rationale: "Provoz uživatelů skrz router patří do chainu Forward[cite: 1709]."
+            rationale: "Provoz uživatelů skrz router patří do chainu Forward."
         },
         {
             question: "Co se stane s paketem, pokud neodpovídá žádnému pravidlu ve firewallu?",
@@ -514,7 +511,7 @@
                 { text: "Established", correct: true },
                 { text: "Invalid", correct: false }
             ],
-            [cite_start]rationale: "Established = již ověřené probíhající spojení[cite: 1522]."
+            rationale: "Established = již ověřené probíhající spojení."
         },
         {
             question: "Typické první pravidlo firewallu v chainu input/forward?",
@@ -535,7 +532,7 @@
                 { text: "Zahodí paket", correct: false },
                 { text: "Zapíše do logu", correct: false }
             ],
-            [cite_start]rationale: "Tarpit předstírá otevřené spojení, ale neposílá data, čímž vyčerpává zdroje útočníka[cite: 2552]."
+            rationale: "Tarpit předstírá otevřené spojení, ale neposílá data, čímž vyčerpává zdroje útočníka."
         },
         {
             question: "Jak se chová provoz s akcí fasttrack?",
@@ -585,7 +582,7 @@
                 { text: "Vypnout firewall", correct: false },
                 { text: "Nastavit statickou IP", correct: false }
             ],
-            [cite_start]rationale: "Proxy-ARP umožňuje routeru odpovídat na ARP dotazy jménem vzdáleného VPN klienta[cite: 1272]."
+            rationale: "Proxy-ARP umožňuje routeru odpovídat na ARP dotazy jménem vzdáleného VPN klienta."
         },
         {
             question: "Proč už není protokol PPTP považován za bezpečný?",
@@ -646,7 +643,7 @@
                 { text: "ICMP (Ping)", correct: true },
                 { text: "HTTP", correct: false }
             ],
-            [cite_start]rationale: "Netwatch pravidelně 'pingá' hosta a spouští skripty při změně stavu[cite: 2094]."
+            rationale: "Netwatch pravidelně 'pingá' hosta a spouští skripty při změně stavu."
         },
         {
             question: "Na které vrstvě pracuje WireGuard a jaký protokol používá?",
@@ -728,7 +725,7 @@
                 { text: "Konfigurace IP adresy", correct: false },
                 { text: "Obnova smazaných souborů", correct: false }
             ],
-            [cite_start]rationale: "Reset hesla (Keep old configuration) je specifická funkce Netinstallu[cite: 1422]."
+            rationale: "Reset hesla (Keep old configuration) je specifická funkce Netinstallu."
         }
     ];
 
@@ -922,4 +919,3 @@
 </script>
 </body>
 </html>
-
