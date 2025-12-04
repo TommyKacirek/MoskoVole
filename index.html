@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MikroTik MTCNA - Kompletní Test (57 Otázek)</title>
+    <title>MikroTik RouterOS - Kompletní test (57 otázek)</title>
     <style>
         :root {
             --primary: #2d3e50;
@@ -39,7 +39,6 @@
         }
 
         h1 { color: var(--primary); text-align: center; margin-bottom: 10px; font-size: 1.8rem; }
-        .tag { background: #e0e0e0; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; vertical-align: middle; margin-left: 10px; color: #555; }
         
         .progress-container { width: 100%; background-color: #e0e0e0; height: 10px; border-radius: 5px; margin-bottom: 20px; overflow: hidden; }
         .progress-bar { height: 100%; background-color: var(--primary); width: 0%; transition: width 0.3s ease; }
@@ -80,6 +79,8 @@
 
         .results-screen { text-align: center; display: none; }
         .score-circle { width: 150px; height: 150px; border-radius: 50%; background: conic-gradient(var(--success) 0%, #e0e0e0 0%); margin: 20px auto; display: flex; align-items: center; justify-content: center; flex-direction: column; font-size: 2rem; font-weight: bold; color: var(--primary); }
+        
+        .beer-reward { font-size: 1.5rem; color: #d35400; font-weight: bold; margin-top: 20px; display: none; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -87,7 +88,7 @@
 <body>
 
 <div class="container">
-    <h1>MTCNA Full Test <span id="mode-tag" class="tag">57 Otázek</span></h1>
+    <h1>MikroTik Test (57 otázek)</h1>
     
     <div id="quiz-ui">
         <div class="stats">
@@ -119,59 +120,59 @@
             <div id="final-score">0%</div>
         </div>
         <p id="final-message"></p>
+        <div id="beer-msg" class="beer-reward">🍺 Gratuluji! Zvládl jsi to na 100%, tak si zajdi na pivo! 🍺</div>
         <button class="restart-btn" onclick="initQuiz()">Spustit znovu</button>
     </div>
 </div>
 
 <script>
-    /* KOMPLETNÍ SADA 57 OTÁZEK - OPRAVENÁ SYNTAXE */
+    // Kompletní sada 57 otázek dle zadání
+    // Otázky s 'type: multi' umožňují více odpovědí (dle PDF certifikace)
+    
     const quizData = [
         {
-            // PDF Otázka 71 - Multi
-            question: "Máte RouterBOARD v továrním nastavení. Jaké jsou možné způsoby připojení pro konfiguraci? (Vyberte všechny správné možnosti)",
+            question: "Jaký je doporučený způsob prvního připojení k novému RouterBoardu, který ještě nemá nastavenou IP adresu?",
             type: "multi",
             options: [
-                { text: "Serial Connection (Sériový port)", correct: true },
-                { text: "MAC-Winbox", correct: true },
-                { text: "Attach-monitor/keyboard", correct: false },
-                { text: "Telnet (MAC-Telnet)", correct: true }
+                { text: "Pomocí nástroje WinBox přes MAC adresu", correct: true },
+                { text: "Přes sériový port (Serial Console)", correct: true },
+                { text: "Pomocí Telnetu na MAC adresu (MAC-Telnet)", correct: true },
+                { text: "SSH na 192.168.88.1", correct: false }
             ],
-            rationale: "Podle PDF (otázka 71) jsou správné možnosti: Serial, MAC-Winbox a Telnet (RouterOS podporuje MAC-Telnet i bez IP)."
+            [cite_start]rationale: "Dle PDF (otázka 71) jsou správné možnosti WinBox-MAC, Serial a Telnet[cite: 1461]."
         },
         {
             question: "K čemu slouží Safe Mode ve WinBoxu / konzoli?",
             type: "single",
             options: [
-                { text: "Automaticky vrátí změny při ztrátě spojení", correct: true },
+                { text: "Automaticky vrátí změny v konfiguraci, pokud dojde ke ztrátě spojení", correct: true },
                 { text: "Zabrání smazání systémových souborů", correct: false },
                 { text: "Uvede router do režimu nízké spotřeby", correct: false }
             ],
-            rationale: "Funkce chrání před chybou v konfiguraci. Pokud se odpojíte, router vrátí změny zpět (Ctrl+x v konzoli)."
+            rationale: "Chrání před chybou v konfiguraci. Pokud se odpojíte, router vrátí změny zpět (Ctrl+x v konzoli)."
         },
         {
-            question: "Typická chyba při statické konfiguraci IP adresy na rozhraní?",
+            question: "Co je typická chyba při statické konfiguraci IP adres na rozhraní?",
             type: "single",
             options: [
-                { text: "Použití veřejné IP adresy", correct: false },
-                { text: "Špatná maska sítě (např. chybějící /24)", correct: true },
+                { text: "Nezadání masky sítě (např. /24), router doplní /32", correct: true },
+                { text: "Použití privátní IP adresy", correct: false },
                 { text: "Nezadání DNS serveru", correct: false }
             ],
-            rationale: "Pokud nezadáte masku, RouterOS často doplní /32, což způsobí, že se router s nikým ve stejné síti nevidí."
+            rationale: "Pokud nezadáte masku, RouterOS často doplní /32, což způsobí, že se router s nikým v síti nevidí."
         },
         {
-            // PDF Otázka 49/114 - Multi
-            question: "Co vše může získat MikroTik DHCP klient z DHCP serveru? (Vyberte všechny správné možnosti)",
+            question: "Co může DHCP klient v RouterOS z DHCP serveru získat?",
             type: "multi",
             options: [
-                { text: "IP Address and Subnet", correct: true },
-                { text: "IP Gateway", correct: true },
-                { text: "DNS Server", correct: true },
+                { text: "IP adresu a masku", correct: true },
+                { text: "Bránu (Gateway)", correct: true },
+                { text: "DNS server", correct: true },
                 { text: "Byte limit", correct: false }
             ],
-            rationale: "Podle PDF (otázka 49 a 114) klient přebírá IP, Masku, Bránu (Gateway) a DNS."
+            [cite_start]rationale: "Podle PDF (otázka 49 a 114) klient přebírá IP, Masku, Bránu a DNS[cite: 1124]."
         },
         {
-            // PDF Otázka 102
             question: "Kde má být nakonfigurován DHCP server, pokud jsou rozhraní ether1–3 zařazena do bridge „bridge-lan“?",
             type: "single",
             options: [
@@ -179,10 +180,9 @@
                 { text: "Na ether1", correct: false },
                 { text: "Na všech portech ether1-3", correct: false }
             ],
-            rationale: "Pokud jsou porty v bridgi, DHCP musí být konfigurováno na logickém rozhraní 'Bridge'."
+            [cite_start]rationale: "Pokud jsou porty v bridgi, DHCP musí být konfigurováno na logickém rozhraní 'Bridge'[cite: 220]."
         },
         {
-            // PDF Otázka 121
             question: "Jaké nastavení je typické pro pravidlo NAT (masquerade) pro odchod provozu z LAN do Internetu?",
             type: "single",
             options: [
@@ -190,92 +190,90 @@
                 { text: "Chain: dstnat, In-Interface: LAN, Action: masquerade", correct: false },
                 { text: "Chain: input, Action: accept", correct: false }
             ],
-            rationale: "Maškaráda (Source NAT) se používá při odchodu ven z routeru (Out-Interface)."
+            [cite_start]rationale: "Maškaráda (Source NAT) se používá při odchodu ven z routeru (Out-Interface)[cite: 556]."
         },
         {
-            question: "Jakým způsobem je vhodné omezit přístup ke službám (WinBox, SSH) v IP → Services?",
+            question: "Jakým způsobem je vhodné omezit přístup ke službám, jako je WinBox, SSH nebo WWW, v menu IP → Services?",
             type: "single",
             options: [
-                { text: "Vypnutím firewallu", correct: false },
                 { text: "Vyplněním pole 'Available From'", correct: true },
+                { text: "Vypnutím firewallu", correct: false },
                 { text: "Změnou portu na 80", correct: false }
             ],
             rationale: "Available From omezuje přístup jen na konkrétní IP adresy nebo rozsahy."
         },
         {
-            question: "Jak omezit, na jakých rozhraních bude dostupný MAC-WinBox nebo MAC-Telnet server?",
+            question: "Jak se v RouterOS obvykle omezuje, na jakých rozhraních bude dostupný MAC-WinBox nebo MAC-Telnet server?",
             type: "single",
             options: [
                 { text: "V Tools -> MAC Server nastavit Allowed Interface List", correct: true },
                 { text: "V IP -> Firewall -> Filter", correct: false },
                 { text: "V nastavení Bridge", correct: false }
             ],
-            rationale: "V menu Tools -> MAC Server lze zakázat discovery a mac-telnet na veřejných portech."
+            [cite_start]rationale: "V menu Tools -> MAC Server lze zakázat discovery a mac-telnet na veřejných portech[cite: 1604]."
         },
         {
-            // PDF Otázka 75 - Multi
-            question: "Vyberte pravdivá tvrzení o zálohách v RouterOS (Backup vs Export):",
+            question: "Jaký je hlavní rozdíl mezi binární zálohou backup a textovou zálohou export?",
             type: "multi",
             options: [
-                { text: "Backup soubory (binární) nejsou editovatelné", correct: true },
-                { text: "Export (skript) je čitelný textový soubor", correct: true },
+                { text: "Backup je binární a nelze jej editovat", correct: true },
+                { text: "Export je textový skript a lze jej editovat", correct: true },
                 { text: "Backup obsahuje pouze hesla", correct: false }
             ],
-            rationale: "PDF potvrzuje: 'Backup files are not editable' a 'Export saves full configuration in script format'."
+            [cite_start]rationale: "PDF potvrzuje: 'Backup files are not editable'[cite: 1503]."
         },
         {
-            question: "Která skupina práv (Group) má plnou kontrolu nad routerem?",
+            question: "Která kombinace práv je nezbytná pro uživatele, který má mít plnou možnost měnit konfiguraci a spravovat ostatní uživatele?",
             type: "single",
             options: [
-                { text: "write", correct: false },
                 { text: "full", correct: true },
+                { text: "write", correct: false },
                 { text: "admin", correct: false }
             ],
             rationale: "Skupina 'full' umožňuje čtení, zápis, testování, reboot i správu uživatelů."
         },
         {
-            question: "Na které vrstvě ISO/OSI pracuje síťový bridge?",
+            question: "Na které vrstvě ISO/OSI pracuje síťový bridge v RouterOS?",
             type: "single",
             options: [
-                { text: "L3 (Síťová)", correct: false },
-                { text: "L2 (Linková)", correct: true },
-                { text: "L1 (Fyzická)", correct: false }
+                { text: "L2 (Linková vrstva - Data Link)", correct: true },
+                { text: "L3 (Síťová vrstva)", correct: false },
+                { text: "L1 (Fyzická vrstva)", correct: false }
             ],
-            rationale: "Bridge spojuje segmenty sítě na základě MAC adres (Data Link Layer)."
+            [cite_start]rationale: "Bridge spojuje segmenty sítě na základě MAC adres[cite: 2125]."
         },
         {
-            question: "Jaký je výchozí STP režim v RouterOS při vytvoření bridge?",
+            question: "Jaký je výchozí STP režim v RouterOS od verze 6.0 při vytvoření bridge?",
             type: "single",
             options: [
-                { text: "None", correct: false },
+                { text: "RSTP", correct: true },
                 { text: "STP", correct: false },
-                { text: "RSTP", correct: true }
+                { text: "None", correct: false }
             ],
             rationale: "RSTP (Rapid Spanning Tree Protocol) je výchozí a rychlejší než staré STP."
         },
         {
-            question: "Jaký STP režim je doporučený pro bridge s VLAN filteringem?",
+            question: "Jaký STP režim je doporučený v RouterOS pro bridge s VLAN filteringem?",
             type: "single",
             options: [
                 { text: "MSTP", correct: true },
                 { text: "RSTP", correct: false },
                 { text: "Žádný", correct: false }
             ],
-            rationale: "MSTP (Multiple Spanning Tree) je optimalizováno pro VLAN prostředí."
+            rationale: "MSTP (Multiple Spanning Tree) je optimalizováno pro VLAN prostředí (load balancing)."
         },
         {
-            // PDF Otázka 154
-            question: "Které rozhraní NELZE standardně přidat do bridge?",
+            question: "Které rozhraní nelze přidat do bridge v RouterOS?",
             type: "single",
             options: [
-                { text: "Ethernet port", correct: false },
                 { text: "Wireless v módu 'station'", correct: true },
+                { text: "Ethernet port", correct: false },
                 { text: "EOIP tunel", correct: false }
             ],
-            rationale: "Mód 'station' nepodporuje L2 bridging kvůli limitacím 802.11 (3-mac frame)."
+            [cite_start]rationale: "Mód 'station' nepodporuje L2 bridging kvůli limitacím 802.11 (3-mac frame)[cite: 2621]."
         },
         {
-            question: "Co znamená volba Hardware Offload u portu v bridge?",
+            question: "Co znamená volba Hardware Offload u portu v bridge (od RouterOS 6.41)?",
             type: "single",
             options: [
                 { text: "Přepínání provádí switch čip, nezatěžuje CPU", correct: true },
@@ -285,11 +283,11 @@
             rationale: "HW Offload umožňuje přímý tok dat přes switch chip (wire speed)."
         },
         {
-            question: "Co určuje hodnota PVID na portu v bridge?",
+            question: "Co určuje hodnota PVID na portu v bridge při použití VLAN?",
             type: "single",
             options: [
-                { text: "VLAN ID, které se zahazuje", correct: false },
                 { text: "VLAN ID přidané příchozím netagovaným paketům", correct: true },
+                { text: "VLAN ID, které se zahazuje", correct: false },
                 { text: "Prioritu paketu", correct: false }
             ],
             rationale: "PVID (Port VLAN ID) se používá pro otagování příchozího 'čistého' provozu uvnitř switche/bridge."
@@ -305,7 +303,7 @@
             rationale: "Untagged porty (access) posílají data k zařízením bez VLAN tagu."
         },
         {
-            question: "Co indikuje přítomnost menu 'Switch' ve WinBoxu?",
+            question: "Co indikuje přítomnost menu Switch ve WinBoxu u RouterBoardu?",
             type: "single",
             options: [
                 { text: "Zařízení má dedikovaný switch čip s vlastní konfigurací", correct: true },
@@ -318,8 +316,8 @@
             question: "Jak se chová port na switch čipu, pokud má VLAN-mode nastaveno na secure?",
             type: "single",
             options: [
-                { text: "Propouští vše", correct: false },
                 { text: "Kontroluje VLAN tabulku a zahazuje neznámé VLANy", correct: true },
+                { text: "Propouští vše", correct: false },
                 { text: "Šifruje provoz", correct: false }
             ],
             rationale: "Secure mód zahazuje pakety s VLAN ID, které nejsou definovány ve VLAN tabulce."
@@ -335,29 +333,27 @@
             rationale: "Odpovídá funkci Access portu - tag se odstraní před odesláním do kabelu."
         },
         {
-            // PDF Otázka 25
-            question: "Co znamená příznak 'C' v routovací tabulce (IP -> Routes)?",
+            question: "Co znamená příznak C u směrovacího záznamu v tabulce IP → Routes?",
             type: "single",
             options: [
                 { text: "Connected (přímo připojená síť)", correct: true },
                 { text: "Complex route", correct: false },
                 { text: "Cable unplugged", correct: false }
             ],
-            rationale: "C = Connected. Vzniká automaticky přidáním IP adresy na interface."
+            rationale: "C = Connected. [cite_start]Vzniká automaticky přidáním IP adresy na interface[cite: 813]."
         },
         {
-            // PDF Otázka 16
-            question: "Jaká cílová adresa se používá pro Default Route?",
+            question: "Jaká cílová adresa se použije pro výchozí (default) trasu v RouterOS?",
             type: "single",
             options: [
-                { text: "255.255.255.255", correct: false },
                 { text: "0.0.0.0/0", correct: true },
+                { text: "255.255.255.255", correct: false },
                 { text: "192.168.1.1", correct: false }
             ],
-            rationale: "0.0.0.0/0 zahrnuje všechny sítě. Používá se pro bránu do internetu."
+            rationale: "0.0.0.0/0 zahrnuje všechny sítě. [cite_start]Používá se pro bránu do internetu[cite: 678]."
         },
         {
-            question: "Jak router vybírá směrovací záznam, pokud existuje více záznamů odpovídajících adrese?",
+            question: "Jak router vybírá směrovací záznam, pokud existuje více záznamů odpovídajících cílové adrese?",
             type: "single",
             options: [
                 { text: "Longest Prefix Match (nejkonkrétnější maska)", correct: true },
@@ -370,14 +366,14 @@
             question: "Co v instanci RIP v RouterOS 7 znamená volba Redistribute=connected?",
             type: "single",
             options: [
-                { text: "Zvyšuje rychlost sítě", correct: false },
                 { text: "Oznamuje sousedům sítě přímo připojené k routeru", correct: true },
+                { text: "Zvyšuje rychlost sítě", correct: false },
                 { text: "Maže připojené trasy", correct: false }
             ],
             rationale: "Umožňuje propagovat lokální sítě (LAN) do dynamického routovacího protokolu."
         },
         {
-            question: "Jaký je hlavní účel volby Country v nastavení WiFi?",
+            question: "Jaký je hlavní účel volby Country v nastavení WiFi rozhraní",
             type: "single",
             options: [
                 { text: "Nastavuje povolené kanály a vysílací výkon dle legislativy", correct: true },
@@ -387,59 +383,57 @@
             rationale: "Nutné pro dodržení regulačních limitů (v ČR ČTÚ)."
         },
         {
-            question: "Jaké kanály 2,4 GHz jsou povoleny v České republice?",
+            question: "Jaké kanály 2,4 GHz jsou povoleny v České republice pro 802.11b/g?",
             type: "single",
             options: [
-                { text: "1 až 11", correct: false },
                 { text: "1 až 13", correct: true },
+                { text: "1 až 11", correct: false },
                 { text: "Pouze 1, 6 a 11", correct: false }
             ],
             rationale: "V Evropě (ETSI) je povoleno 13 kanálů."
         },
         {
-            // PDF Otázka 106
-            question: "Který mód stanice je proprietární a umožňuje transparentní L2 bridge mezi MikroTiky?",
+            question: "Který z následujících módů stanice v RouterOS je proprietární Mikrotik mód a umožňuje transparentní přenos na L2 vrstvě (vhodný pro bridge přes WiFi)?",
             type: "single",
             options: [
-                { text: "station", correct: false },
                 { text: "station-bridge", correct: true },
+                { text: "station", correct: false },
                 { text: "ap-bridge", correct: false }
             ],
-            rationale: "Station-bridge je proprietární režim MikroTiku. Station-pseudobridge je univerzální náhrada (s omezeními)."
+            rationale: "Station-bridge je proprietární režim MikroTiku. [cite_start]Station-pseudobridge je univerzální náhrada (s omezeními)[cite: 1914]."
         },
         {
-            question: "Jaká kombinace módů je doporučena pro transparentní most mezi Ethernetem a WiFi?",
+            question: "Jaká kombinace módů je v RouterOS doporučena pro vytvoření transparentního mostu mezi Ethernetem a WiFi?",
             type: "single",
             options: [
                 { text: "AP: ap-bridge <-> Klient: station-bridge", correct: true },
                 { text: "AP: bridge <-> Klient: station", correct: false },
                 { text: "Oba ap-bridge", correct: false }
             ],
-            rationale: "Standardní řešení pro MikroTik PtP spoj."
+            [cite_start]rationale: "Standardní řešení pro MikroTik PtP spoj[cite: 802]."
         },
         {
-            question: "Jaký nástroj použít pro zjištění obsazenosti kanálů v okolí?",
+            question: "Jaký nástroj RouterOS se podle textu doporučuje použít před ručním nastavením kanálu AP, abyste zjistili obsazenost kanálů v okolí?",
             type: "single",
             options: [
-                { text: "Ping", correct: false },
                 { text: "Snooper / Spectral Scan / Frequency Usage", correct: true },
+                { text: "Ping", correct: false },
                 { text: "Torch", correct: false }
             ],
-            rationale: "PDF zmiňuje kontrolu frekvencí. Snooper je pokročilý nástroj pro analýzu spektra."
+            rationale: "PDF zmiňuje kontrolu frekvencí. [cite_start]Snooper je pokročilý nástroj pro analýzu spektra[cite: 388]."
         },
         {
-            // PDF Otázka 280
-            question: "Jaký je účel parametru 'default-forwarding=no' v nastavení WiFi?",
+            question: "Jaký je účel parametru client-isolation v Datapath konfiguraci WiFi v RouterOS 7.x?",
             type: "single",
             options: [
-                { text: "Zabrání komunikaci mezi klienty navzájem (Client Isolation)", correct: true },
+                { text: "Zabrání komunikaci mezi klienty navzájem", correct: true },
                 { text: "Odpojí klienta od internetu", correct: false },
                 { text: "Zabrání klientům připojit se k AP", correct: false }
             ],
-            rationale: "Default forwarding=no izoluje klienty na L2 vrstvě."
+            rationale: "V RouterOS v6 známo jako default-forwarding=no. [cite_start]Izoluje klienty na L2 vrstvě[cite: 291]."
         },
         {
-            question: "Co dělá parametr vlan-id v záznamu WiFi Access Listu?",
+            question: "Co dělá parametr vlan-id v záznamu WiFi Access Listu v RouterOS 7.x?",
             type: "single",
             options: [
                 { text: "Přiřadí klientovi konkrétní VLAN po připojení", correct: true },
@@ -449,93 +443,87 @@
             rationale: "Umožňuje dynamické VLANy (např. Hosté vs Zaměstnanci) na stejném SSID."
         },
         {
-            // PDF Otázka 23 / 120 - Opakování konceptu
-            question: "Které tvrzení o Firewallu a NATu je správné?",
+            question: "Jaké tvrzení o jednotlivých částech firewallu v RouterOS je správné?",
             type: "single",
             options: [
                 { text: "Connection tracking musí být zapnutý, aby fungoval NAT", correct: true },
                 { text: "NAT funguje i bez Connection Trackingu", correct: false },
                 { text: "Firewall filtry se zpracovávají náhodně", correct: false }
             ],
-            rationale: "Bez sledování spojení router neví, kam vracet odpovědi pro NATované klienty."
+            [cite_start]rationale: "Bez sledování spojení router neví, kam vracet odpovědi pro NATované klienty[cite: 241]."
         },
         {
-            // PDF Otázka 95
-            question: "Který chain filtruje pakety směřující PŘÍMO NA router (např. WinBox, DNS)?",
+            question: "Který předdefinovaný chain v IP → Firewall → Filter se používá pro filtrování paketů směřujících na IP adresy samotného routeru (např. přístup na WinBox)?",
             type: "single",
             options: [
                 { text: "input", correct: true },
                 { text: "forward", correct: false },
                 { text: "output", correct: false }
             ],
-            rationale: "Chain Input chrání samotný router."
+            [cite_start]rationale: "Chain Input chrání samotný router[cite: 1778]."
         },
         {
-            // PDF Otázka 89
-            question: "Který chain filtruje pakety, které routerem POUZE PROCHÁZEJÍ (např. LAN -> Internet)?",
+            question: "Jaký chain v IP → Firewall → Filter zpracovává pakety, které router pouze přeposílá mezi rozhraními (např. z LAN do Internetu)?",
             type: "single",
             options: [
                 { text: "forward", correct: true },
                 { text: "input", correct: false },
                 { text: "prerouting", correct: false }
             ],
-            rationale: "Provoz uživatelů skrz router patří do chainu Forward."
+            [cite_start]rationale: "Provoz uživatelů skrz router patří do chainu Forward[cite: 1709]."
         },
         {
-            question: "Co se stane s paketem, pokud neodpovídá žádnému pravidlu ve firewallu?",
+            question: "Co se stane s paketem v tabulce Filter, pokud neodpovídá žádnému pravidlu v daném chainu?",
             type: "single",
             options: [
-                { text: "Je zahozen (Drop)", correct: false },
                 { text: "Je přijat (Accept)", correct: true },
+                { text: "Je zahozen (Drop)", correct: false },
                 { text: "Vrátí se odesílateli", correct: false }
             ],
             rationale: "Výchozí politika RouterOS je 'co není zakázáno, je povoleno'."
         },
         {
-            // PDF Otázka 23
-            question: "Důsledek vypnutí Connection Tracking?",
+            question: "Jaký je hlavní důsledek vypnutí sledování spojení (Connection Tracking = no) v IP → Firewall → Connections?",
             type: "single",
             options: [
                 { text: "Nefunguje NAT a stavový firewall", correct: true },
                 { text: "Zrychlí se WiFi", correct: false },
                 { text: "Zvýší se bezpečnost", correct: false }
             ],
-            rationale: "Router se stane 'bezstavovým', nebude umět NATovat."
+            [cite_start]rationale: "Router se stane 'bezstavovým', nebude umět NATovat[cite: 236]."
         },
         {
-            // PDF Otázka 76 / 119
-            question: "Jaký stav (connection-state) mají pakety patřící do již navázaného a fungujícího spojení?",
+            question: "Jaký stav (connection-state) mají pakety patřící do již navázaného spojení, které firewall typicky bez omezení propouští?",
             type: "single",
             options: [
-                { text: "New", correct: false },
                 { text: "Established", correct: true },
+                { text: "New", correct: false },
                 { text: "Invalid", correct: false }
             ],
-            rationale: "Established = již ověřené probíhající spojení."
+            [cite_start]rationale: "Established = již ověřené probíhající spojení[cite: 1522]."
         },
         {
-            question: "Typické první pravidlo firewallu v chainu input/forward?",
+            question: "Jaké stavy spojení se typicky používají v prvním pravidle v chainu INPUT/FORWARD, které „povoluje všechny již navázané a odvozené spojení“?",
             type: "single",
             options: [
-                { text: "Drop all", correct: false },
                 { text: "Accept established, related (untracked)", correct: true },
+                { text: "Drop all", correct: false },
                 { text: "Accept all", correct: false }
             ],
             rationale: "Zvyšuje výkon routeru, protože nemusí kontrolovat každý paket běžícího streamu."
         },
         {
-            // PDF Otázka 147
-            question: "Co dělá akce 'tarpit'?",
+            question: "Co dělá akce tarpit v IP → Firewall → Filter?",
             type: "single",
             options: [
                 { text: "Udržuje TCP spojení otevřené pro zpomalení útočníka", correct: true },
                 { text: "Zahodí paket", correct: false },
                 { text: "Zapíše do logu", correct: false }
             ],
-            rationale: "Tarpit předstírá otevřené spojení, ale neposílá data, čímž vyčerpává zdroje útočníka."
+            [cite_start]rationale: "Tarpit předstírá otevřené spojení, ale neposílá data, čímž vyčerpává zdroje útočníka[cite: 2552]."
         },
         {
-            question: "Jak se chová provoz s akcí fasttrack?",
+            question: "Jak se chová provoz, který je označen pravidlem s akcí fasttrack (FastTrack connection) v RouterOS?",
             type: "single",
             options: [
                 { text: "Obchází většinu zpracování v CPU (firewall, queues)", correct: true },
@@ -545,24 +533,24 @@
             rationale: "FastTrack výrazně zvyšuje propustnost a snižuje zátěž CPU."
         },
         {
-            question: "Jaký je hlavní účel protokolu PPP?",
+            question: "Jaký je hlavní účel protokolu PPP v RouterOS?",
             type: "single",
             options: [
                 { text: "Vytváření tunelů bod-bod (VPN, PPPoE)", correct: true },
                 { text: "Směrování", correct: false },
                 { text: "Switching", correct: false }
             ],
-            rationale: "Point-to-Point Protocol."
+            [cite_start]rationale: "Point-to-Point Protocol[cite: 1989]."
         },
         {
-            question: "Jak RouterOS skládá konfiguraci PPP uživatele (bez RADIUS)?",
+            question: "Jak RouterOS skládá výslednou konfiguraci PPP uživatele při použití lokální AAA (bez RADIUS)?",
             type: "single",
             options: [
                 { text: "Nastavení v PPP Secret + PPP Profile", correct: true },
                 { text: "Pouze z IP Addresses", correct: false },
                 { text: "Z DHCP serveru", correct: false }
             ],
-            rationale: "Secret obsahuje přihlášení, Profile společná nastavení."
+            [cite_start]rationale: "Secret obsahuje přihlášení, Profile společná nastavení[cite: 104]."
         },
         {
             question: "Co platí o polích Local Address a Remote Address v PPP profilu?",
@@ -575,14 +563,14 @@
             rationale: "Definují konce tunelu."
         },
         {
-            question: "Co je nutné udělat, pokud v PPP profilu používáte Bridge pro LAN přístup (místo routování)?",
+            question: "Co je nutné udělat, pokud v PPP profilu nastavíte pole Bridge tak, aby byl „místní“ konec tunelu součástí LAN bridge a měla probíhat komunikace i se zařízeními za vzdáleným koncem tunelu?",
             type: "single",
             options: [
                 { text: "Zapnout Proxy-ARP na LAN bridge rozhraní", correct: true },
                 { text: "Vypnout firewall", correct: false },
                 { text: "Nastavit statickou IP", correct: false }
             ],
-            rationale: "Proxy-ARP umožňuje routeru odpovídat na ARP dotazy jménem vzdáleného VPN klienta."
+            [cite_start]rationale: "Proxy-ARP umožňuje routeru odpovídat na ARP dotazy jménem vzdáleného VPN klienta[cite: 1272]."
         },
         {
             question: "Proč už není protokol PPTP považován za bezpečný?",
@@ -595,17 +583,17 @@
             rationale: "PPTP lze snadno prolomit hrubou silou."
         },
         {
-            question: "Jak se chová PPPoE klient, pokud nezadáte Service Name?",
+            question: "Jak se chová PPPoE klient v RouterOS, pokud v poli Service nezadáte žádný název služby?",
             type: "single",
             options: [
-                { text: "Nepřipojí se", correct: false },
                 { text: "Připojí se k jakémukoliv koncentrátoru", correct: true },
+                { text: "Nepřipojí se", correct: false },
                 { text: "Vybere nejrychlejší server", correct: false }
             ],
             rationale: "Akceptuje první PADO nabídku od jakéhokoliv serveru."
         },
         {
-            question: "Proč je v rámci QoS běžné záměrně zahazovat pakety?",
+            question: "Proč je v rámci QoS v přetížené síti běžné záměrně zahazovat méně prioritní pakety?",
             type: "single",
             options: [
                 { text: "Aby donutil TCP protokol zpomalit (Congestion Avoidance)", correct: true },
@@ -615,17 +603,27 @@
             rationale: "TCP interpretuje ztrátu paketu jako signál k zpomalení."
         },
         {
-            question: "Jak Simple Queues zpracovávají pakety ve vztahu k pořadí?",
+            question: "Na čem je založena implementace front v MikroTik RouterOS a kolik úrovní front lze konfigurovat?",
+            type: "single",
+            options: [
+                { text: "HTB (Hierarchical Token Bucket), 8 úrovní", correct: true },
+                { text: "FIFO, nekonečno úrovní", correct: false },
+                { text: "PCQ, 1 úroveň", correct: false }
+            ],
+            rationale: "RouterOS queues využívají HTB strom a podporují priority 1-8 (1 je nejvyšší)."
+        },
+        {
+            question: "Jak Simple Queues v RouterOS zpracovávají pakety ve vztahu k pořadí front?",
             type: "single",
             options: [
                 { text: "Sekvenčně shora dolů (0, 1, 2...)", correct: true },
                 { text: "Všechny najednou", correct: false },
                 { text: "Náhodně", correct: false }
             ],
-            rationale: "První pravidlo, které pasuje, se uplatní. Ostatní se ignorují."
+            rationale: "První pravidlo, které pasuje, se uplatní. [cite_start]Ostatní se ignorují[cite: 1668]."
         },
         {
-            question: "Jaký je rozdíl mezi Simple Queue a Queue Tree?",
+            question: "Jaký je zásadní rozdíl mezi Simple Queue a Queue Tree v RouterOS?",
             type: "single",
             options: [
                 { text: "Simple je pro jednoduché omezení IP; Tree je pro komplexní hierarchii", correct: true },
@@ -635,18 +633,17 @@
             rationale: "Queue Tree umožňuje globální priority, ale je složitější."
         },
         {
-            // PDF Otázka 117
-            question: "Jaký je výchozí typ testu v nástroji Netwatch?",
+            question: "Jaký je výchozí typ testu v nástroji Netwatch (parametr type)?",
             type: "single",
             options: [
-                { text: "TCP", correct: false },
                 { text: "ICMP (Ping)", correct: true },
+                { text: "TCP", correct: false },
                 { text: "HTTP", correct: false }
             ],
-            rationale: "Netwatch pravidelně 'pingá' hosta a spouští skripty při změně stavu."
+            [cite_start]rationale: "Netwatch pravidelně 'pingá' hosta a spouští skripty při změně stavu[cite: 2094]."
         },
         {
-            question: "Na které vrstvě pracuje WireGuard a jaký protokol používá?",
+            question: "Na které vrstvě ISO/OSI pracuje WireGuard a jaký transportní protokol používá?",
             type: "single",
             options: [
                 { text: "L3, UDP", correct: true },
@@ -656,17 +653,17 @@
             rationale: "WireGuard je moderní L3 VPN nad UDP."
         },
         {
-            question: "Jaký přístup k pojmům server a klient má WireGuard?",
+            question: "Jaký přístup k pojmům „server“ a „klient“ používá WireGuard v RouterOS?",
             type: "single",
             options: [
-                { text: "Server je ten s veřejnou IP", correct: false },
                 { text: "Nerozlišuje, všichni jsou 'Peers' (rovnocenní)", correct: true },
+                { text: "Server je ten s veřejnou IP", correct: false },
                 { text: "Klient pouze přijímá data", correct: false }
             ],
             rationale: "WireGuard je Peer-to-Peer."
         },
         {
-            question: "Co znamená příznak 'R' u WireGuard rozhraní?",
+            question: "Co znamená, že se u nově vytvořeného WireGuard rozhraní v RouterOS objeví příznak „R“?",
             type: "single",
             options: [
                 { text: "Running (aktivní handshake)", correct: true },
@@ -676,7 +673,7 @@
             rationale: "Znamená to, že interface má funkční spojení s peerem."
         },
         {
-            question: "K čemu slouží parametr allowed-address u WireGuard peeru?",
+            question: "K čemu slouží parametr allowed-address u WireGuard peeru v RouterOS?",
             type: "single",
             options: [
                 { text: "Definuje směrování a filtraci (Crypto-Routing)", correct: true },
@@ -686,7 +683,7 @@
             rationale: "Filtruje, jaké IP smí tunelem projít."
         },
         {
-            question: "Co určují parametry endpoint-address a port u WireGuard?",
+            question: "Jaká tvrzení nejlépe vystihují význam parametrů endpoint-address a endpoint-port u WireGuard peeru?",
             type: "single",
             options: [
                 { text: "Veřejnou adresu a port protistrany", correct: true },
@@ -696,11 +693,11 @@
             rationale: "Kam se mají fyzicky posílat šifrovaná data."
         },
         {
-            question: "Co dělá parametr persistent-keepalive u WireGuard?",
+            question: "Co dělá parametr persistent-keepalive u WireGuard peeru v RouterOS?",
             type: "single",
             options: [
-                { text: "Restartuje tunel při chybě", correct: false },
                 { text: "Posílá prázdné pakety pro udržení NAT mappingu", correct: true },
+                { text: "Restartuje tunel při chybě", correct: false },
                 { text: "Zvyšuje MTU", correct: false }
             ],
             rationale: "Udržuje průchod přes NAT otevřený."
@@ -709,34 +706,19 @@
             question: "K čemu slouží parametr preshared-key u WireGuard peeru?",
             type: "single",
             options: [
-                { text: "Pro přihlášení do WinBoxu", correct: false },
                 { text: "Ochrana proti post-quantum útokům", correct: true },
+                { text: "Pro přihlášení do WinBoxu", correct: false },
                 { text: "Jako náhrada private key", correct: false }
             ],
             rationale: "Přidává vrstvu symetrického šifrování."
-        },
-        {
-             // PDF Otázka 68 - Multi (Opakujeme logiku Netinstall pro jistotu pokrytí)
-            question: "Které z následujících možností JSOU funkce Netinstallu? (Vyberte všechny správné možnosti)",
-            type: "multi",
-            options: [
-                { text: "Reset hesla se zachováním konfigurace", correct: true },
-                { text: "Instalace RouterOS", correct: true },
-                { text: "Konfigurace IP adresy", correct: false },
-                { text: "Obnova smazaných souborů", correct: false }
-            ],
-            rationale: "Reset hesla (Keep old configuration) je specifická funkce Netinstallu."
         }
     ];
-
-    // --- APP LOGIC ---
 
     let currentQuestionIndex = 0;
     let score = 0;
     let currentData = null;
-    let userSelection = []; // Pro multi-select
+    let userSelection = [];
 
-    // DOM Elements
     const qText = document.getElementById('question-text');
     const optsCont = document.getElementById('options-container');
     const feedbackBox = document.getElementById('feedback-box');
@@ -751,18 +733,19 @@
     const finalScoreEl = document.getElementById('final-score');
     const finalScoreCircle = document.getElementById('final-score-circle');
     const finalMsg = document.getElementById('final-message');
+    const beerMsg = document.getElementById('beer-msg');
 
     function initQuiz() {
         currentQuestionIndex = 0;
         score = 0;
         quizUI.style.display = 'block';
         resultsUI.style.display = 'none';
+        beerMsg.style.display = 'none';
         updateStats();
         loadQuestion();
     }
 
     function loadQuestion() {
-        // Reset UI
         feedbackBox.classList.remove('show');
         feedbackBox.style.display = 'none';
         nextBtn.style.display = 'none';
@@ -776,112 +759,69 @@
         }
 
         currentData = quizData[currentQuestionIndex];
-        
-        // Update Text
-        qText.innerHTML = currentData.question + 
-            (currentData.type === 'multi' ? "<br><small style='color:#666; font-weight:normal;'>(Vyberte všechny správné odpovědi)</small>" : "");
+        qText.innerHTML = currentData.question + (currentData.type === 'multi' ? "<br><small style='color:#666; font-weight:normal;'>(Vyberte všechny správné odpovědi)</small>" : "");
 
-        // Render Options
         currentData.options.forEach((opt, index) => {
             const label = document.createElement('label');
             label.classList.add('option-label');
-            
             const input = document.createElement('input');
             input.type = currentData.type === 'multi' ? 'checkbox' : 'radio';
             input.name = 'quiz-option';
             input.value = index;
-            
-            // Event Listener
             input.onchange = () => handleSelection(index, input, label);
-
             label.appendChild(input);
             label.appendChild(document.createTextNode(opt.text));
             optsCont.appendChild(label);
         });
-
         updateStats();
     }
 
     function handleSelection(index, input, label) {
         if (currentData.type === 'single') {
-            // Single choice: immediate check
             submitAnswer(index, label);
         } else {
-            // Multi choice: toggle selection, show check button
-            if (input.checked) {
-                userSelection.push(index);
-            } else {
-                userSelection = userSelection.filter(i => i !== index);
-            }
-            // Show "Check" button if at least one selected
+            if (input.checked) userSelection.push(index);
+            else userSelection = userSelection.filter(i => i !== index);
             checkBtn.style.display = userSelection.length > 0 ? 'inline-block' : 'none';
         }
     }
 
     function submitAnswer(singleIndex = null, singleLabel = null) {
         let correctIndexes = [];
-        currentData.options.forEach((opt, idx) => {
-            if (opt.correct) correctIndexes.push(idx);
-        });
-
+        currentData.options.forEach((opt, idx) => { if (opt.correct) correctIndexes.push(idx); });
         const labels = optsCont.querySelectorAll('.option-label');
         const inputs = optsCont.querySelectorAll('input');
-        
-        // Disable inputs
         labels.forEach(l => l.classList.add('disabled'));
         inputs.forEach(i => i.disabled = true);
         checkBtn.style.display = 'none';
 
-        let isCorrect = false;
-
         if (currentData.type === 'single') {
-            // Logic for Single
             const selectedOpt = currentData.options[singleIndex];
-            isCorrect = selectedOpt.correct;
-
-            if (isCorrect) {
+            if (selectedOpt.correct) {
                 singleLabel.classList.add('correct');
                 score++;
                 feedbackText.innerHTML = "<strong>Správně!</strong> " + (currentData.rationale || "");
             } else {
                 singleLabel.classList.add('wrong');
-                // Highlight correct
                 labels[correctIndexes[0]].classList.add('correct');
                 feedbackText.innerHTML = "<strong>Chyba.</strong> Správná odpověď: " + currentData.options[correctIndexes[0]].text + ".<br>" + (currentData.rationale || "");
             }
-
         } else {
-            // Logic for Multi
-            // Check if user selection matches correct indexes exactly
             userSelection.sort();
             correctIndexes.sort();
-            
             const isMatch = JSON.stringify(userSelection) === JSON.stringify(correctIndexes);
-            
             if (isMatch) {
-                isCorrect = true;
                 score++;
                 feedbackText.innerHTML = "<strong>Výborně!</strong> Máte všechna správná pole.<br>" + (currentData.rationale || "");
             } else {
-                isCorrect = false;
                 feedbackText.innerHTML = "<strong>Neúplné nebo chybné.</strong><br>" + (currentData.rationale || "");
             }
-
-            // Visual Feedback for Multi
             labels.forEach((lbl, idx) => {
-                const isSelected = userSelection.includes(idx);
-                const isActuallyCorrect = correctIndexes.includes(idx);
-
-                if (isSelected && isActuallyCorrect) {
-                    lbl.classList.add('correct'); // User selected correct
-                } else if (isSelected && !isActuallyCorrect) {
-                    lbl.classList.add('wrong'); // User selected wrong
-                } else if (!isSelected && isActuallyCorrect) {
-                    lbl.classList.add('missed'); // User missed this correct one
-                }
+                if (userSelection.includes(idx) && correctIndexes.includes(idx)) lbl.classList.add('correct');
+                else if (userSelection.includes(idx) && !correctIndexes.includes(idx)) lbl.classList.add('wrong');
+                else if (!userSelection.includes(idx) && correctIndexes.includes(idx)) lbl.classList.add('missed');
             });
         }
-
         feedbackBox.style.display = 'block';
         setTimeout(() => feedbackBox.classList.add('show'), 10);
         nextBtn.style.display = 'inline-block';
@@ -904,18 +844,21 @@
         resultsUI.style.display = 'block';
         const pct = Math.round((score / quizData.length) * 100);
         finalScoreEl.textContent = `${pct}%`;
-        
         const color = pct >= 80 ? '#10ac84' : (pct >= 50 ? '#ff9f43' : '#ee5253');
         finalScoreCircle.style.background = `conic-gradient(${color} ${pct}%, #e0e0e0 ${pct}%)`;
         finalScoreCircle.style.color = color;
 
-        if(pct === 100) finalMsg.textContent = "Perfektní! Jste připraveni.";
-        else if(pct > 80) finalMsg.textContent = "Skvělá práce.";
-        else finalMsg.textContent = "Doporučuji projít otázky znovu.";
+        if (pct === 100) {
+            finalMsg.textContent = "Fantastický výkon!";
+            beerMsg.style.display = 'block';
+        } else if (pct > 80) {
+            finalMsg.textContent = "Skvělá práce, jen kousek k dokonalosti.";
+        } else {
+            finalMsg.textContent = "Doporučuji projít otázky znovu.";
+        }
     }
 
     initQuiz();
-
 </script>
 </body>
 </html>
