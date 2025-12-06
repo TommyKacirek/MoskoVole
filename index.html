@@ -718,6 +718,83 @@
                 { text: "Jako náhrada private key", correct: false }
             ],
             rationale: "Přidává vrstvu symetrického šifrování."
+        },
+        {
+            question: "Jakou masku sítě (CIDR) je nejvhodnější použít pro spojení 'bod-bod' (Point-to-Point) mezi dvěma routery, aby se šetřilo adresami?",
+            type: "single",
+            options: [
+                { text: "/30 (255.255.255.252 - umožňuje pouze 2 hosty)", correct: true },
+                { text: "/24 (255.255.255.0 - standardní síť)", correct: false },
+                { text: "/32 (jedna konkrétní IP adresa)", correct: false },
+                { text: "/29 (umožňuje 6 hostů)", correct: false }
+            ],
+            rationale: "Maska /30 poskytuje celkem 4 adresy (Network, 2x Host, Broadcast), což je přesně to, co je potřeba pro propojení dvou zařízení bez plýtvání IP prostorem."
+        },
+        {
+            question: "Co se stane, když při statické konfiguraci IP adresy v RouterOS zadáte do pole Address adresu sítě (např. 10.10.10.0/24) místo adresy zařízení?",
+            type: "single",
+            options: [
+                { text: "RouterOS to dovolí, ale komunikace nebude fungovat, protože chybí unikátní adresa hosta", correct: true },
+                { text: "RouterOS vyhodí chybu a nedovolí adresu uložit", correct: false },
+                { text: "Router si automaticky vybere první volnou adresu z rozsahu (např. .1)", correct: false },
+                { text: "Fungovat to bude, router se stane broadcast serverem", correct: false }
+            ],
+            rationale: "RouterOS je v zadávání benevolentní, ale adresa sítě (network address) není platná unicast adresa pro rozhraní, takže paketová komunikace nebude fungovat."
+        },
+        {
+            question: "Jak vypadá zápis pro 'Default Route' (výchozí bránu) v směrovací tabulce?",
+            type: "single",
+            options: [
+                { text: "Dst. Address: 0.0.0.0/0", correct: true },
+                { text: "Dst. Address: 255.255.255.255/32", correct: false },
+                { text: "Dst. Address: 127.0.0.1", correct: false },
+                { text: "Dst. Address: 192.168.1.1", correct: false }
+            ],
+            rationale: "Zápis 0.0.0.0/0 matematicky zahrnuje všechny možné IP adresy, proto se používá jako 'cesta poslední záchrany' pro sítě, které nejsou explicitně uvedeny jinde."
+        },
+        {
+            question: "Pokud má router ve směrovací tabulce dva platné záznamy pro stejnou cílovou IP (např. 192.168.1.0/24 a 192.168.1.128/25), který záznam použije?",
+            type: "single",
+            options: [
+                { text: "Záznam s nejdelší maskou sítě (Longest Prefix Match), tedy /25", correct: true },
+                { text: "Záznam s nejkratší maskou sítě, tedy /24", correct: false },
+                { text: "První záznam, který byl do tabulky přidán (shora dolů)", correct: false },
+                { text: "Náhodný záznam (Load Balancing)", correct: false }
+            ],
+            rationale: "Základní pravidlo routingu je 'Longest Prefix Match'. Router vždy vybere tu cestu, která je specifičtější (má delší masku)."
+        },
+        {
+            question: "Která z následujících IP adres je privátní (dle RFC 1918) a nefunguje ve veřejném internetu bez NAT?",
+            type: "single",
+            options: [
+                { text: "192.168.88.1", correct: true },
+                { text: "8.8.8.8", correct: false },
+                { text: "147.229.146.7", correct: false },
+                { text: "1.1.1.1", correct: false }
+            ],
+            rationale: "Adresy začínající 192.168.x.x patří do privátního rozsahu třídy C, který se na veřejném internetu nesměruje."
+        },
+        {
+            question: "Co znamená maska sítě /24 v desítkovém zápisu?",
+            type: "single",
+            options: [
+                { text: "255.255.255.0", correct: true },
+                { text: "255.255.0.0", correct: false },
+                { text: "255.255.255.252", correct: false },
+                { text: "255.0.0.0", correct: false }
+            ],
+            rationale: "Prefix /24 znamená, že prvních 24 bitů masky jsou jedničky. To odpovídá třem oktetům po osmi bitech (8+8+8), tedy 255.255.255.0."
+        },
+        {
+            question: "Pokud nastavíte IP adresu 192.168.1.1/24, jaký bude rozsah adres v této síti?",
+            type: "single",
+            options: [
+                { text: "192.168.1.0 až 192.168.1.255 (256 adres celkem)", correct: true },
+                { text: "192.168.0.0 až 192.168.255.255", correct: false },
+                { text: "192.168.1.1 až 192.168.1.100", correct: false },
+                { text: "Pouze 192.168.1.1", correct: false }
+            ],
+            rationale: "Maska /24 fixuje první tři čísla IP adresy. Měnit se může pouze poslední číslo (0-255), což dává rozsah celé sítě."
         }
     ];
 
@@ -869,5 +946,6 @@
 </script>
 </body>
 </html>
+
 
 
