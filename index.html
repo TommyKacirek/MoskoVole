@@ -166,7 +166,8 @@
                 { text: "IP adresu a masku", correct: true },
                 { text: "Bránu (Gateway)", correct: true },
                 { text: "DNS server", correct: true },
-                { text: "Byte limit", correct: false }
+                { text: "Byte limit", correct: false },
+                { text: "NTP server", correct: true}
             ],
             rationale: "DHCP klient standardně přebírá IP, Masku, Bránu a DNS."
         },
@@ -192,11 +193,14 @@
         },
         {
             question: "Jakým způsobem je vhodné omezit přístup ke službám, jako je WinBox, SSH nebo WWW, v menu IP → Services?",
-            type: "single",
+            type: "multi",
             options: [
                 { text: "Vyplněním pole 'Available From'", correct: true },
                 { text: "Vypnutím firewallu", correct: false },
-                { text: "Změnou portu na 80", correct: false }
+                { text: "Změnou portu na 80", correct: false },
+                { text: "Omezením rozsahu IP adres", correct: true }
+                { text: "Změnit port služby na jiný", correct: true }
+                { text: "Povolením/zakázáním služby", correct: true }
             ],
             rationale: "Available From omezuje přístup jen na konkrétní IP adresy nebo rozsahy."
         },
@@ -216,7 +220,9 @@
             options: [
                 { text: "Backup je binární a nelze jej editovat", correct: true },
                 { text: "Export je textový skript a lze jej editovat", correct: true },
-                { text: "Backup obsahuje pouze hesla", correct: false }
+                { text: "Backup obsahuje pouze hesla", correct: false },
+                { text: "Binární včetně hesel", correct: true},
+                { text: "Export bez uživatelů a hesel", correct: true}
             ],
             rationale: "Backup je binární obraz disku, Export je konfigurační skript."
         },
@@ -592,11 +598,13 @@
         },
         {
             question: "Proč je v rámci QoS v přetížené síti běžné záměrně zahazovat méně prioritní pakety?",
-            type: "single",
+            type: "multi",
             options: [
                 { text: "Aby donutil TCP protokol zpomalit (Congestion Avoidance)", correct: true },
                 { text: "Protože CPU nestíhá", correct: false },
-                { text: "Kvůli úspoře energie", correct: false }
+                { text: "Kvůli úspoře energie", correct: false },
+                { text: "Uvolnění zdrojů pro důležitější datové toky", correct: true},
+                { text: "Zabránění zahlcení sítě", correct: true}
             ],
             rationale: "TCP interpretuje ztrátu paketu jako signál k zpomalení."
         },
@@ -632,11 +640,12 @@
         },
         {
             question: "Jaký je výchozí typ testu v nástroji Netwatch (parametr type)?",
-            type: "single",
+            type: "multi",
             options: [
                 { text: "ICMP (Ping)", correct: true },
                 { text: "TCP", correct: false },
-                { text: "HTTP", correct: false }
+                { text: "HTTP", correct: false },
+                { text: "simple", correct: true}
             ],
             rationale: "Netwatch pravidelně 'pingá' hosta a spouští skripty při změně stavu."
         },
@@ -860,3 +869,4 @@
 </script>
 </body>
 </html>
+
